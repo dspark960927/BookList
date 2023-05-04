@@ -38,31 +38,25 @@ public class MainController {
 
     @RequestMapping("/main")
     public String Main(Model model){
-        List<MainVO> main = new ArrayList<>();
-        main = mainService.getMainList();
-        model.addAttribute("main",main);
+        //신간
+        List<MainVO> itemNew = new ArrayList<>();
+        itemNew = mainService.getNewList();
+        model.addAttribute("itemNew",itemNew);
 
-        System.out.println(main);
+        //System.out.println(itemNew);
 
+        //베스트셀러
+        List<MainVO> bestSeller = new ArrayList<>();
+        bestSeller = mainService.getBestList();
+        model.addAttribute("bestSeller",bestSeller);
 
-
-
+        System.out.println(bestSeller);
 
         return "main";
 
     }
 
-    @RequestMapping("/apiTest")
-    public String apiTest(Model model, HttpServletRequest request){
 
-        List<MainVO> main = new ArrayList<>();
-        main = mainService.getMainList();
-        model.addAttribute("main",main);
-
-        System.out.println(main);
-
-        return "api";
-    }
 
 
 

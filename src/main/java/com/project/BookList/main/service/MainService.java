@@ -5,5 +5,7 @@ import com.project.BookList.main.VO.MainVO;
 import java.util.List;
 
 public interface MainService {
-    List<MainVO> getMainList();
+
+    List<MainVO> getNewList();
+    List<MainVO> getBestList();
 }

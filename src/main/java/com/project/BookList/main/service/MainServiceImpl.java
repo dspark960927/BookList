@@ -18,7 +18,54 @@ public class MainServiceImpl implements MainService{
     public String requestUrl = "http://www.aladin.co.kr/ttb/api/ItemList.aspx"; //요청 Url
 
     @Override
-    public List<MainVO> getMainList() {
+    public List<MainVO> getNewList() {
+        String result;
+
+        List<MainVO> text = new ArrayList<>();
+        try {
+            URL url = new URL(
+                    requestUrl
+                            +"?ttbkey=" + TTBKey
+                            +"&QueryType=ItemNewSpecial" //주목할 만한 신간
+                            +"&MaxResults=8&start=1" //최대출력개수, 시작페이지
+                            +"&SearchTarget=Book" //조회대상
+                            +"&output=JS" //출력방법
+                            +"&Version=20131101" //api버전
+                            +"&Cover=Big" //api버전
+            );
+
+            BufferedReader bf;
+
+            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+
+            result = bf.readLine();
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+
+            JSONArray item = (JSONArray) jsonObject.get("item");
+
+            for (int i=0; i<item.size(); i++){
+                MainVO itemNew = new MainVO();
+
+                JSONObject title = (JSONObject)item.get(i);
+
+                itemNew.setTitle((String)title.get("title"));
+                itemNew.setAuthor((String)title.get("author"));
+                itemNew.setCover((String)title.get("cover"));
+                itemNew.setIsbn((String)title.get("isbn"));
+
+                text.add(itemNew);
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return text;
+    }
+
+    @Override
+    public List<MainVO> getBestList() {
         String result;
 
         List<MainVO> text = new ArrayList<>();
@@ -26,8 +73,8 @@ public class MainServiceImpl implements MainService{
             URL url = new URL(
                     requestUrl
                     +"?ttbkey=" + TTBKey
-                    +"&QueryType=Bestseller" //신간전체리스트
-                    +"&MaxResults=12&start=1" //최대출력개수, 시작페이지
+                    +"&QueryType=Bestseller" //베스트샐러
+                    +"&MaxResults=8&start=1" //최대출력개수, 시작페이지
                     +"&SearchTarget=Book" //조회대상
                     +"&output=JS" //출력방법
                     +"&Version=20131101" //api버전
@@ -46,15 +93,16 @@ public class MainServiceImpl implements MainService{
             JSONArray item = (JSONArray) jsonObject.get("item");
 
             for (int i=0; i<item.size(); i++){
-                MainVO main = new MainVO();
+                MainVO bestSeller = new MainVO();
 
                 JSONObject title = (JSONObject)item.get(i);
 
-                main.setTitle((String)title.get("title"));
-                main.setAuthor((String)title.get("author"));
-                main.setCover((String)title.get("cover"));
+                bestSeller.setTitle((String)title.get("title"));
+                bestSeller.setAuthor((String)title.get("author"));
+                bestSeller.setCover((String)title.get("cover"));
+                bestSeller.setIsbn((String)title.get("isbn"));
 
-                text.add(main);
+                text.add(bestSeller);
             }
 
         } catch (Exception e) {
