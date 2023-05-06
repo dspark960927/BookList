@@ -23,4 +23,16 @@ public class IndexController {
 
     }
 
+    @RequestMapping("/index3")
+    public String index3(){
+        return "register";
+
+    }
+
+    @RequestMapping("/index4")
+    public String index4(){
+        return "login1";
+
+    }
+
 }

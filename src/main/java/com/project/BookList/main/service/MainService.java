@@ -8,4 +8,5 @@ public interface MainService {
 
     List<MainVO> getNewList();
     List<MainVO> getBestList();
+    List<MainVO> getSearchList(String keyword);
 }

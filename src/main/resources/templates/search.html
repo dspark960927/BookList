@@ -33,7 +33,7 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-6" onclick="location.href='/main'">
                 <h1>BookList</h1>
             </div>
             <div class="col-sm-6">
@@ -62,8 +62,8 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5" style="margin: 10px auto; display: flex;">
         <div>
-            <h2>주목할만한 신간</h2>
-            <div  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" th:each="entry: ${itemNew}" style="float: left">
+            <h2>검색결과</h2>
+            <div  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" th:each="entry: ${searchList}" style="float: left">
                 <div class="col mb-5" style="margin: 5px 5px 5px 5px; width: 250px; height: 430px" th:onclick="|location.href='@{detail(isbn=${entry.isbn})}'|">
                     <div class="card h-100">
                         <!-- Product image-->
@@ -79,28 +79,6 @@
                 </div>
             </div>
         </div>
-
-        <div>
-            <h2>베스트셀러</h2>
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" th:each="entry: ${bestSeller}" style="float: left">
-                <div class="col mb-5" style="margin: 5px 5px 5px 5px; width: 250px; height: 430px" th:onclick="|location.href='@{detail(isbn=${entry.isbn})}'|">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" th:src="@{${entry.cover}}" style="width:200px; height: 300px; margin: 0 auto" />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <span th:text="${entry.title}" class="word" style="font-weight: bolder !important;"></span>
-                                <span th:text="${entry.author}" class="word"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
     </div>
 </section>
 
