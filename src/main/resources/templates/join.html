@@ -7,7 +7,102 @@
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .msg{
+            display: none;
+            color: red;
+        }
+    </style>
+
 </head>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    var idChk = false;
+    var pwChk = false;
+    var pwckChk = false;
+    var pwcoChk = false;
+    var nameChk = false;
+    var nicknameChk = false;
+    var bdateChk = false;
+
+    //유효성 검사
+    $(document).ready(function (){
+        document.getElementById("join_button").onclick = function (){
+            var id = $('#M_ID').val();
+            var pw = $('#M_PW').val();
+            var pwck = $('#M_PWCK').val();
+            var name = $('#M_NAME').val();
+            var nickname = $('#M_NICKNAME').val();
+            var bdate = $('#M_BDATE').val();
+
+            //비밀번호 확인
+            var pw1 = $('#M_PW').val();
+            var pwck1 = $('#M_PWCK').val();
+            $('#PwckMsg').css('display', 'none');
+
+            if(pw1 != pwck1){
+                $('#PwckMsg').css('display','block')
+                pwcoChk = false;
+                console.log("1");
+            }else{
+                pwcoChk = true;
+            }
+
+            if(id == ""){
+                $('#IdMsg1').css('display','block');
+                idChk = false;
+            }else{
+                $('#IdMsg1').css('display','none');
+                idChk = true;
+            }
+
+            if(pw == ""){
+                $('#PwMsg').css('display','block');
+                pwChk = false;
+            }else{
+                $('#PwMsg').css('display','none');
+                pwChk = true;
+            }
+
+            if(pwck == ""){
+                $('#PwMsg').css('display','block');
+                pwckChk = false;
+            }else{
+                $('#PwMsg').css('display','none');
+                pwckChk = true;
+            }
+
+            if(name == ""){
+                $('#NameMsg').css('display','block');
+                nameChk = false;
+            }else{
+                $('#NameMsg').css('display','none');
+                nameChk = true;
+            }
+
+            if(nickname == ""){
+                $('#NicknameMsg1').css('display','block');
+                nicknameChk = false;
+            }else{
+                $('#NicknameMsg1').css('display','none');
+                nicknameChk = true;
+            }
+
+            if(bdate == ""){
+                $('#BdateMsg').css('display','block');
+                bdateChk = false;
+            }else{
+                $('#BdateMsg').css('display','none');
+                bdateChk = true;
+            }
+
+            if(idChk&&pwChk&&pwckChk&&pwcoChk&&nameChk&&nicknameChk&&bdateChk){
+                $("#join_form").attr("action","/join")
+                $("#join_form").submit();
+            }
+        };
+    });
+</script>
 <body>
 <div>
     <section class="content-header">
@@ -22,7 +117,7 @@
 
     <div id="layoutAuthentication_content">
         <main>
-            <form role="form" th:object=${memberVO} th:action="@{/insertProc}" method="post" enctype="multipart/form-data">
+            <form role="form" th:object=${memberVO}  method="post" enctype="multipart/form-data" id="join_form">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-7">
@@ -33,46 +128,52 @@
                                         <div class="form-floating mb-3">
                                             <input class="form-control" th:field="*{M_ID}" id="M_ID" name="M_ID" type="Id" placeholder="ID" />
                                             <label for="M_ID">ID</label>
+                                            <span id="IdMsg1" class="msg">아이디를 입력해주세요.</span>
+                                            <span id="IdMsg2" class="msg">아이디가 이미 존재합니다.</span>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
                                                     <input class="form-control" th:field="*{M_PW}" id="M_PW" name="M_PW" type="password" placeholder="Create a password" />
                                                     <label for="M_PW">Password</label>
+
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" id="inputPasswordConfirm" type="password" placeholder="Confirm password" />
-                                                    <label for="inputPasswordConfirm">Confirm Password</label>
+                                                    <input class="form-control" id="M_PWCK" type="password" placeholder="Confirm password" />
+                                                    <label for="M_PWCK">Confirm Password</label>
                                                 </div>
                                             </div>
+                                            <div>
+                                                <span id="PwMsg" class="msg">비밀번호를 입력해주세요.</span>
+                                                <span id="PwckMsg" class="msg">비밀번호가 일치하지 않습니다.</span>
+                                            </div>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" th:field="*{M_NICKNAME}" id="M_NICKNAME" name="M_NICKNNAME" type="NickName" placeholder="닉네임" />
+                                            <input class="form-control" th:field="*{M_NAME}" id="M_NAME" name="M_NAME" type="Name" placeholder="이름"/>
+                                            <label for="M_NAME">이름</label>
+                                            <span id="NameMsg" class="msg">이름을 입력해주세요.</span>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" th:field="*{M_NICKNAME}" id="M_NICKNAME" name="M_NICKNAME" type="NickName" placeholder="닉네임"/>
                                             <label for="M_NICKNAME">닉네임</label>
-                                        </div>
-                                        <div style="margin: 0; display: flex">
-                                            <div class="form-check" style="flex: 1">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="sex1" checked>
-                                                <label class="form-check-label" for="sex1">
-                                                    남
-                                                </label>
-                                            </div>
-                                            <div class="form-check" style="flex: 1">
-                                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="sex2">
-                                                <label class="form-check-label" for="sex2">
-                                                    여
-                                                </label>
-                                            </div>
+                                            <span id="NicknameMsg1" class="msg">닉네임을 입력해주세요.</span>
+                                            <span id="NicknameMsg2" class="msg">닉네임이 이미 존재합니다.</span>
+
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" th:field="*{M_BDATE}" id="M_BDATE" name="M_BDATE" type="Bdate" placeholder="생년월일 YYYYMMDD" />
+                                            <input class="form-control" th:field="*{M_BDATE}" id="M_BDATE" name="M_BDATE" type="Bdate" placeholder="생년월일 YYYYMMDD" th:classappend="${#fields.hasErrors('M_BDATE')} ? 'error'"/>
                                             <label for="M_BDATE">생년월일</label>
+                                            <span id="BdateMsg" class="msg">생년월일을 입력해주세요.</span>
+
                                         </div>
                                         <div class="mt-4 mb-0">
-                                            <div class="d-grid"><a class="btn btn-primary btn-block" href="login.html">Create Account</a></div>
+                                            <div class="d-grid">
+                                                <input class="btn btn-primary btn-block" id="join_button" type="button" th:value="회원가입">
+                                            </div>
                                         </div>
+
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
@@ -85,6 +186,7 @@
             </form>
         </main>
     </div>
+</div>
 
 
 

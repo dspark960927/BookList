@@ -3,7 +3,7 @@
 
 <mapper namespace="com.project.BookList.member.mapper.MemberMapper">
     <insert id="memberInsert" parameterType="com.project.BookList.member.VO.MemberVO" keyProperty="M_ID">
-        INSERT INTO members(M_ID,M_PW,M_NAME,M_NICKNAME,M_GENDER,M_BDATE)
-        VALUES (#{M_ID},#{M_PW},#{M_NAME},#{M_NICKNAME},#{M_GENDER},#{M_BDATE})
+        INSERT INTO members(M_ID,M_PW,M_NAME,M_NICKNAME,M_BDATE)
+        VALUES (#{M_ID},#{M_PW},#{M_NAME},#{M_NICKNAME},#{M_BDATE})
     </insert>
 </mapper>
