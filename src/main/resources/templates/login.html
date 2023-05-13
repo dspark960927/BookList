@@ -1,6 +1,7 @@
 <!-- 로그인 -->
 
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,6 +11,7 @@
     <meta name="author" content="" />
     <title>Login - SB Admin</title>
     <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
         .center{
@@ -33,35 +35,42 @@
 <div id="layoutAuthentication">
     <div id="layoutAuthentication_content">
         <main>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-5">
-                        <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                        <label for="inputEmail">Email address</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputPassword" type="password" placeholder="Password" />
-                                        <label for="inputPassword">Password</label>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        <a class="small" href="findId">아이디 찾기</a>
-                                        <a class="small" href="findPw">비밀번호 찾기</a>
-                                        <a class="btn btn-primary" href="main">Login</a>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="card-footer text-center py-3">
-                                <div class="small"><a href="join">회원가입</a></div>
+            <form role="form" th:object=${memberVO} th:action="@{/login}" method="post" enctype="multipart/form-data" id="join_form">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">로그인</h3></div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" th:field="*{M_ID}" id="M_ID" name="M_ID" type="Id" placeholder="ID" />
+                                            <label for="M_ID">ID</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" th:field="*{M_PW}" id="M_PW" name="M_PW" type="password" placeholder="ID" />
+                                            <label for="M_PW">PW</label>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <a class="small" href="findId">아이디 찾기</a>
+                                            <a class="small" href="findPw">비밀번호 찾기</a>
+                                            <!--
+                                            <a class="btn btn-primary" href="login">Login</a>
+                                            -->
+
+                                            <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="회원가입">
+
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small"><a href="join">회원가입</a></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </main>
     </div>
 </div>

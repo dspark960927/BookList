@@ -16,4 +16,10 @@ public class MemberServiceImpl implements MemberService{
         return memberMapper.memberInsert(member);
     }
 
+    @Override
+    public MemberVO memberLogin(MemberVO member) {
+        return memberMapper.memberLogin(member);
+    }
+
+
 }

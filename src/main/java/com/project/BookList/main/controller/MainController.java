@@ -3,6 +3,7 @@ package com.project.BookList.main.controller;
 ;
 import com.project.BookList.main.VO.MainVO;
 import com.project.BookList.main.service.MainService;
+import com.project.BookList.member.VO.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,8 @@ public class MainController {
 
 
     @RequestMapping("/main")
-    public String Main(Model model){
+    public String Main(Model model, MemberVO memberVO){
+        System.out.println(memberVO);
         //신간
         List<MainVO> itemNew = new ArrayList<>();
         itemNew = mainService.getNewList();

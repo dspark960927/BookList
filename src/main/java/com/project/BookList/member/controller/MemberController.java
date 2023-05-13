@@ -9,18 +9,42 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
 public class MemberController {
     @Autowired
     MemberService memberService;
-    @RequestMapping("/login")
-    public String MemberLogin(){
 
+    @GetMapping("/login")
+    public String MemberLoginPage(@ModelAttribute MemberVO member){
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String MemberLogin(MemberVO member, HttpServletRequest req, RedirectAttributes rttr){
+        HttpSession session = req.getSession();
+        MemberVO memberVO = memberService.memberLogin(member);
+
+        System.out.println(memberVO);
+        if(memberVO == null){
+            session.setAttribute("memberVO", null);
+            rttr.addFlashAttribute("msg", false);
+            System.out.println("1");
+
+            return "redirect:/";
+        }else{
+            session.setAttribute("memberVO", member);
+            System.out.println("2");
+
+            return "main";
+        }
+
+
     }
 
     @GetMapping("/join")

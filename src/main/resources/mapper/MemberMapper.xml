@@ -6,4 +6,10 @@
         INSERT INTO members(M_ID,M_PW,M_NAME,M_NICKNAME,M_BDATE)
         VALUES (#{M_ID},#{M_PW},#{M_NAME},#{M_NICKNAME},#{M_BDATE})
     </insert>
+
+    <select id="memberLogin" resultType="com.project.BookList.member.VO.MemberVO">
+        SELECT *
+        FROM members
+        WHERE M_ID = #{M_ID} and M_PW = #{M_PW}
+    </select>
 </mapper>
