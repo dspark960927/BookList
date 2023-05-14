@@ -4,7 +4,6 @@ import com.project.BookList.detail.VO.DetailVO;
 import com.project.BookList.detail.VO.ReviewVO;
 import com.project.BookList.detail.service.DetailService;
 import com.project.BookList.detail.service.ReviewService;
-import com.project.BookList.main.VO.MainVO;
 import com.project.BookList.member.VO.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,12 +28,18 @@ public class DetailController {
         System.out.println("detail "+memberVO);
         System.out.println(isbn);
 
-
         List<DetailVO> detail = new ArrayList<>();
         detail = detailService.getDetailList(isbn);
         model.addAttribute("detail",detail);
 
         System.out.println(detail);
+
+        List<ReviewVO> review = new ArrayList<>();
+        review = reviewService.reviewSelect(isbn);
+        model.addAttribute("review", review);
+
+        System.out.println(review);
+
 
         return "detail";
     }

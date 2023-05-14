@@ -6,4 +6,10 @@
         VALUES (#{M_NO},#{R_CONTS},#{R_BOOKKEY})
     </insert>
 
+    <select id="reviewSelect" resultType="com.project.BookList.detail.VO.ReviewVO" >
+        SELECT M_NICKNAME, R_DATE, R_CONTS
+        FROM REVIEW JOIN MEMBERS ON REVIEW.M_NO = MEMBERS.M_NO
+        WHERE R_BOOKKEY = #{bookKey}
+    </select>
+
 </mapper>

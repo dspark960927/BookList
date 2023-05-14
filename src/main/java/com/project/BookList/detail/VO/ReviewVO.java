@@ -13,4 +13,5 @@ public class ReviewVO {
     private String R_CONTS;
     private String R_DATE;
     private String R_BOOKKEY;
+    private String M_NICKNAME;
 }

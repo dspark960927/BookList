@@ -87,10 +87,11 @@
                         <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
                     </form>
 
-                    <div class="d-flex mb-4" th:each="entry: ${detail}">
+                    <div class="d-flex mb-4" th:each="entry: ${review}">
                         <div class="ms-3">
-                            <div class="fw-bold">Commenter Name</div>
-                            If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                            <div class="fw-bold" th:text="${entry.m_NICKNAME}"></div>
+                            <p th:text="${entry.r_CONTS}" class="lead"></p>
+                            <p th:text="${entry.r_DATE}" class="lead"></p>
                         </div>
                     </div>
                 </div>
