@@ -9,19 +9,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class MainController {
 
+
     @Autowired
     MainService mainService;
 
 
     @RequestMapping("/main")
-    public String Main(Model model, MemberVO memberVO){
-        System.out.println(memberVO);
+    public String Main(Model model, @SessionAttribute(name="memberVO",required = false)MemberVO memberVO){
+
+        model.addAttribute("memberVO", memberVO);
+        System.out.println("main "+memberVO);
         //신간
         List<MainVO> itemNew = new ArrayList<>();
         itemNew = mainService.getNewList();
@@ -40,7 +45,8 @@ public class MainController {
     }
 
     @RequestMapping("/search")
-    public String Search(@RequestParam("keyword") String keyword, Model model){
+    public String Search(@RequestParam("keyword") String keyword, Model model, @SessionAttribute(name="memberVO",required = false)MemberVO memberVO){
+        System.out.println("search "+ memberVO);
         System.out.println(keyword);
 
         List<MainVO> searchList = new ArrayList<>();

@@ -26,25 +26,25 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String MemberLogin(MemberVO member, HttpServletRequest req, RedirectAttributes rttr){
+    public String MemberLogin(MemberVO memberVO, HttpServletRequest req, RedirectAttributes rttr){
+        //세션 생성
         HttpSession session = req.getSession();
-        MemberVO memberVO = memberService.memberLogin(member);
+        MemberVO member = memberService.memberLogin(memberVO);
 
-        System.out.println(memberVO);
-        if(memberVO == null){
+        if(member == null){
             session.setAttribute("memberVO", null);
             rttr.addFlashAttribute("msg", false);
             System.out.println("1");
 
             return "redirect:/";
         }else{
+            //로그인 성공하면 세션에 회원정보 보관
             session.setAttribute("memberVO", member);
-            System.out.println("2");
+            System.out.println("login" + member);
+            System.out.println("로그인 성공");
 
-            return "main";
+            return "redirect:/main";
         }
-
-
     }
 
     @GetMapping("/join")
