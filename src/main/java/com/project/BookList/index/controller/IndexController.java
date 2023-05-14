@@ -35,4 +35,10 @@ public class IndexController {
 
     }
 
+    @RequestMapping("/index5")
+    public String index5(){
+        return "index3";
+
+    }
+
 }
