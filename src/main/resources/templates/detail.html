@@ -18,6 +18,9 @@
             margin-right: auto;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+
 </head>
 <body>
 <section class="content-header">
@@ -86,36 +89,40 @@
                         <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS}" id="R_CONTS" name="R_CONTS"></textarea>
                         <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
                     </form>
-
-                    <div class="d-flex mb-4" th:each="entry: ${review}">
-                        <div class="ms-3">
-                            <div class="fw-bold" th:text="${entry.m_NICKNAME}"></div>
-                            <p th:text="${entry.r_CONTS}" class="lead"></p>
-                            <p th:text="${entry.r_DATE}" class="lead"></p>
+                        <div class="d-flex mb-4" th:each="entry: ${review}">
+                            <div class="ms-3">
+                                <div class="fw-bold" th:text="${entry.M_NICKNAME}"></div>
+                                <p th:text="${entry.R_CONTS}" class="lead"></p>
+                                <p th:text="${entry.R_DATE}" class="lead"></p>
+                                <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}">수정</button>
+                                <button class="btn btn-outline-dark flex-shrink-0" id="deleteBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}"
+                                        th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewDelete(this.getAttribute('R_ID'),this.getAttribute('isbn'))">삭제</button>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </section>
     </div>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
 
 </body>
+<script>
+    function reviewDelete(R_NO,isbn){
+        console.log("삭제버튼")
+        console.log(R_NO);
+        console.log(isbn);
+        $.ajax({
+            type:"POST",
+            url:'/detail/delete/R_NO/'+R_NO,
+            success:function (res) {
+                alert("삭제");
+                location.href = `detail?isbn=` + isbn;
+            }
+        });
+    }
+</script>
 </html>

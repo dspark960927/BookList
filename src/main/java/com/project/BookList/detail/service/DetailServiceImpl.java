@@ -34,8 +34,6 @@ public class DetailServiceImpl implements DetailService {
                             +"&Cover=Big" //이미지크기
             );
 
-            System.out.println(url);
-
             BufferedReader bf;
 
             bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
@@ -46,7 +44,6 @@ public class DetailServiceImpl implements DetailService {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
 
             JSONArray item = (JSONArray) jsonObject.get("item");
-
 
                 DetailVO detail = new DetailVO();
 
