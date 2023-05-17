@@ -80,30 +80,19 @@ public class DetailController {
         return "redirect:/detail";
     }
 
-    /*
-    @PostMapping("")
+    @PostMapping("/detail/update/R_NO/{R_NO}")
     @ResponseBody
-    public UpdateReview(ReviewVO reviewVO, Model model){
-        return;
+    public void UpdateReview(ReviewVO reviewVO, Model model){
+        System.out.println(reviewVO);
+        reviewService.reviewUpdate(reviewVO);
     }
-
-     */
 
 
 
     @PostMapping("/detail/delete/R_NO/{R_NO}")
     @ResponseBody
     public void ReviewDelete(@PathVariable int R_NO,
-                               @ModelAttribute ReviewVO reviewVO
-                               //,@RequestParam("isbn") String isbn, RedirectAttributes re
-    ){
-
-        System.out.println(R_NO);
-        //re.addAttribute("isbn", isbn);
-
+                               @ModelAttribute ReviewVO reviewVO){
         reviewService.reviewDelete(R_NO);
-
-        //return "redirect:/detail";
-        //return "main";
     }
 }

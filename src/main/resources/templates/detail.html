@@ -20,7 +20,6 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
-
 </head>
 <body>
 <section class="content-header">
@@ -92,11 +91,14 @@
                         <div class="d-flex mb-4" th:each="entry: ${review}">
                             <div class="ms-3">
                                 <div class="fw-bold" th:text="${entry.M_NICKNAME}"></div>
+                                <div th:Id="'R_ID'+${entry.R_NO}">
                                 <p th:text="${entry.R_CONTS}" class="lead"></p>
                                 <p th:text="${entry.R_DATE}" class="lead"></p>
-                                <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}">수정</button>
+                                <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}"
+                                        th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewUpdate(this.getAttribute('R_ID'),this.getAttribute('isbn'))">수정</button>
                                 <button class="btn btn-outline-dark flex-shrink-0" id="deleteBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}"
                                         th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewDelete(this.getAttribute('R_ID'),this.getAttribute('isbn'))">삭제</button>
+                                </div>
                             </div>
                         </div>
                 </div>
@@ -112,9 +114,6 @@
 </body>
 <script>
     function reviewDelete(R_NO,isbn){
-        console.log("삭제버튼")
-        console.log(R_NO);
-        console.log(isbn);
         $.ajax({
             type:"POST",
             url:'/detail/delete/R_NO/'+R_NO,
@@ -124,5 +123,34 @@
             }
         });
     }
+
+    function reviewUpdate(R_NO, isbn){
+        var contentView = "";
+            contentView += '<form class="mb-4" th:object=${reviewVO} method="post">' ;
+            contentView += '<textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS1}" id="R_CONTS1" name="R_CONTS1"></textarea>';
+            contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button" type="button" onclick="update('+ R_NO + ',\'' + isbn +'\')">수정</button>';
+            contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button">취소</button>';
+            contentView += '</form>';
+
+        $('#R_ID'+R_NO).replaceWith(contentView);
+    }
+
+    function update(R_NO,isbn){
+        const r = $("#R_CONTS1").val();
+        const R_CONTS = {
+            R_CONTS : r
+        }
+
+        $.ajax({
+            type:'POST',
+            url:'/detail/update/R_NO/'+R_NO,
+            data:R_CONTS,
+            success:function (res) {
+                alert("업뎃");
+                location.href = `detail?isbn=` + isbn;
+            }
+        })
+    }
+
 </script>
 </html>
