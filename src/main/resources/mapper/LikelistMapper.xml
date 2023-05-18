@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.BookList.detail.mapper.LikelistMapper">
+    <insert id="likelistInsert" parameterType="com.project.BookList.detail.mapper.LikelistMapper" keyProperty="L_NO">
+        INSERT INTO likelist(M_NO,L_LIKECHK,L_BOOKKEY)
+        VALUES (#{M_NO},#{L_LIKECHK},#{L_BOOKKEY})
+    </insert>
+
+    <select id="likelistSelect" resultType="com.project.BookList.detail.VO.LikelistVO" >
+        SELECT L_NO,M_NO,L_LIKECHK,L_BOOKKEY
+        FROM LIKELIST
+        WHERE M_NO = #{M_NO} AND L_BOOKKEY = #{L_BOOKKEY}
+    </select>
+
+    <delete id="likelistDelete">
+        DELETE FROM likelist
+        WHERE L_NO = #{L_NO}
+    </delete>
+</mapper>

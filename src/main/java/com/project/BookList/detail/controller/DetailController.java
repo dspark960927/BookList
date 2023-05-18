@@ -1,8 +1,10 @@
 package com.project.BookList.detail.controller;
 
 import com.project.BookList.detail.VO.DetailVO;
+import com.project.BookList.detail.VO.LikelistVO;
 import com.project.BookList.detail.VO.ReviewVO;
 import com.project.BookList.detail.service.DetailService;
+import com.project.BookList.detail.service.LikelistService;
 import com.project.BookList.detail.service.ReviewService;
 import com.project.BookList.member.VO.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +27,17 @@ public class DetailController {
     @Autowired
     ReviewService reviewService;
 
+    @Autowired
+    LikelistService likelistService;
+
     @GetMapping("/detail")
-    public String Datail(@RequestParam("isbn") String isbn, Model model, Model model2,
+    public String Datail(@RequestParam("isbn") String isbn, Model model,
                          @SessionAttribute(name="memberVO",required = false) MemberVO memberVO,
                          @ModelAttribute ReviewVO reviewVO){
-
-        //System.out.println("detail "+memberVO);
-        //System.out.println(isbn);
 
         List<DetailVO> detail = new ArrayList<>();
         detail = detailService.getDetailList(isbn);
         model.addAttribute("detail",detail);
-
-        //System.out.println(detail);
 
         List<ReviewVO> review = new ArrayList<>();
         review = reviewService.reviewSelect(isbn);
@@ -45,17 +45,13 @@ public class DetailController {
 
         model.addAttribute("member",memberVO);
 
-        System.out.println(memberVO);
-        System.out.println(review);
+        LikelistVO likelist = new LikelistVO();
+        likelist = likelistService.likkelistSelect(memberVO.getM_NO(),isbn);
 
-        //댓글 작성자
-        if(memberVO != null){
-            for(int i = 0;i < review.size();i++){
-                if(review.get(i).getM_NO() == memberVO.getM_NO()){
-                    model.addAttribute("isWriter",true);
-                }
-            }
-        }
+        model.addAttribute("likelist", likelist);
+
+        System.out.println("likelist : "+likelist);
+
         return "detail";
     }
 
@@ -66,16 +62,10 @@ public class DetailController {
 
         re.addAttribute("isbn", isbn);
 
-        System.out.println("post1 "+reviewVO);
-
         reviewVO.setM_NO(memberVO.getM_NO());
         reviewVO.setR_BOOKKEY(isbn);
 
-        //reviewVO.setR_CONTS();
-
         reviewService.reviewInsert(reviewVO);
-
-        System.out.println("post2 "+reviewVO);
 
         return "redirect:/detail";
     }
@@ -83,16 +73,26 @@ public class DetailController {
     @PostMapping("/detail/update/R_NO/{R_NO}")
     @ResponseBody
     public void UpdateReview(ReviewVO reviewVO, Model model){
-        System.out.println(reviewVO);
         reviewService.reviewUpdate(reviewVO);
     }
 
-
-
     @PostMapping("/detail/delete/R_NO/{R_NO}")
     @ResponseBody
-    public void ReviewDelete(@PathVariable int R_NO,
-                               @ModelAttribute ReviewVO reviewVO){
+    public void ReviewDelete(@PathVariable int R_NO, @ModelAttribute ReviewVO reviewVO){
         reviewService.reviewDelete(R_NO);
     }
+
+    @PostMapping("/detail/likeinsert/M_NO/{M_NO}")
+    @ResponseBody
+    public void LikelistInsert(@ModelAttribute LikelistVO likelistVO){
+
+        likelistService.likelistInsert(likelistVO);
+    }
+
+    @PostMapping("/detail/likedelete/L_NO/{L_NO}")
+    @ResponseBody
+    public void LikelistDelete(@PathVariable int L_NO){
+        likelistService.likelistDelete(L_NO);
+    }
+
 }

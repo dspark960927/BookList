@@ -71,11 +71,14 @@
                     <label style="font-weight: bolder;">상품설명</label>
                     <p th:text="${entry.description}" class="lead"></p><br>
                     <div class="d-flex">
-                        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                            <i class="bi-cart-fill me-1"></i>
-                            Add to cart
-                        </button>
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==null"
+                                    th:M_NO="${member.M_NO}" th:isbn="${entry.isbn}" th:onclick="likelistInsert(this.getAttribute('M_NO'),this.getAttribute('isbn'))">
+                                ♡
+                            </button>
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==1"
+                                    th:L_NO="${likelist.L_NO}" th:isbn="${entry.isbn}" th:onclick="likelistDelete(this.getAttribute('L_NO'),this.getAttribute('isbn'))">
+                                ♥
+                            </button>
                     </div>
                 </div>
             </div>
@@ -94,9 +97,9 @@
                                 <div th:Id="'R_ID'+${entry.R_NO}">
                                 <p th:text="${entry.R_CONTS}" class="lead"></p>
                                 <p th:text="${entry.R_DATE}" class="lead"></p>
-                                <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}"
+                                <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button" th:if="${entry.M_NO}==${member?.M_NO}"
                                         th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewUpdate(this.getAttribute('R_ID'),this.getAttribute('isbn'))">수정</button>
-                                <button class="btn btn-outline-dark flex-shrink-0" id="deleteBtn" type="button" th:if="${entry.M_NO}==${member.M_NO}"
+                                <button class="btn btn-outline-dark flex-shrink-0" id="deleteBtn" type="button" th:if="${entry.M_NO}==${member?.M_NO}"
                                         th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewDelete(this.getAttribute('R_ID'),this.getAttribute('isbn'))">삭제</button>
                                 </div>
                             </div>
@@ -150,6 +153,39 @@
                 location.href = `detail?isbn=` + isbn;
             }
         })
+    }
+
+    function likelistInsert(M_NO, isbn){
+        const m = M_NO;
+        const c = 1;
+        const l = isbn;
+
+        const like = {
+            M_NO : m,
+            L_LIKECHK : c,
+            L_BOOKKEY : l
+        }
+        $.ajax({
+            type : 'POST',
+            url : '/detail/likeinsert/M_NO/'+M_NO,
+            data: like,
+            success:function (res) {
+                alert("좋아요 리스트에 추가합니다.");
+                location.href = `detail?isbn=` + isbn;
+            }
+        })
+    }
+
+    function likelistDelete(L_NO,isbn){
+        console.log("삭제버튼")
+        $.ajax({
+            type:"POST",
+            url:'/detail/likedelete/L_NO/'+L_NO,
+            success:function (res) {
+                alert("좋아요 리스트에서 삭제합니다.");
+                location.href = `detail?isbn=` + isbn;
+            }
+        });
     }
 
 </script>
