@@ -37,4 +37,9 @@ public class ReviewServiceImpl implements ReviewService{
         return result;
     }
 
+    @Override
+    public int reviewChkSelect(int M_NO, String isbn) {
+        return reviewMapper.reviewChkSelect(M_NO, isbn);
+    }
+
 }

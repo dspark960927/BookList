@@ -50,7 +50,12 @@ public class DetailController {
             likelist = likelistService.likkelistSelect(memberVO.getM_NO(),isbn);
 
             model.addAttribute("likelist", likelist);
+
+            int mChk = reviewService.reviewChkSelect(memberVO.getM_NO(),isbn);
+            model.addAttribute("mChk",mChk);
         }
+
+
 
         return "detail";
     }

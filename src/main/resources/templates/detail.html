@@ -74,10 +74,12 @@
                         <label style="font-weight: bolder;">상품설명</label>
                         <p th:text="${entry.description}" class="lead"></p><br>
                         <div class="d-flex">
+                            <!--로그인 안했을때 빈하트-->
                             <button class="btn btn-outline-dark flex-shrink-0" type="button"
                                     th:if="${member?.M_NO}==null">
                                 ♡
                             </button>
+                            <!--로그인했는데 좋아요 안되어있으면 빈하트-->
                             <button class="btn btn-outline-dark flex-shrink-0" type="button"
                                     th:if="${likelist?.l_LIKECHK}==null AND ${member?.M_NO}!=null"
                                     th:M_NO="${member?.M_NO}" th:isbn="${entry.isbn}"
@@ -99,10 +101,24 @@
                 <div class="card bg-light">
                     <div class="card-body">
                         <form class="mb-4" th:object=${reviewVO} method="post">
-                            <textarea class="form-control" rows="3"
-                                      placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS}"
-                                      id="R_CONTS" name="R_CONTS"></textarea>
-                            <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
+                            <!--로그인 안했으면 textarea, button 비활성화-->
+                            <div th:if="${member?.M_NO}==null">
+                                <textarea class="form-control" rows="3"
+                                          placeholder="로그인 해주세요" disabled></textarea>
+                                <input class="btn btn-primary btn-block" disabled='disabled' th:value="확인">
+                            </div>
+                            <div th:if="${member?.M_NO}!=null AND ${mChk}==0">
+                                <textarea class="form-control" rows="3"
+                                          placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS}"
+                                          id="R_CONTS" name="R_CONTS"></textarea>
+                                <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
+                            </div>
+                            <div th:if="${mChk}!=0">
+                                <textarea class="form-control" rows="3"
+                                          placeholder="이미 한줄평이 있습니다." disabled></textarea>
+                                <input class="btn btn-primary btn-block" disabled='disabled' th:value="확인">
+                            </div>
+
                         </form>
                         <div class="d-flex mb-4" th:each="entry: ${review}">
                             <div class="ms-3">
@@ -208,6 +224,10 @@
                 location.href = `detail?isbn=` + isbn;
             }
         });
+    }
+
+    function memberReview(){
+
     }
 
 </script>

@@ -16,4 +16,6 @@ public interface ReviewMapper {
 
     int reviewUpdate(ReviewVO reviewVO);
 
+    int reviewChkSelect(int M_NO, String isbn);
+
 }

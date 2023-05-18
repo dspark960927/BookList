@@ -22,4 +22,10 @@
         DELETE FROM REVIEW
         WHERE R_NO = #{R_NO}
     </delete>
+
+    <select id="reviewChkSelect" resultType="int">
+        SELECT IFNULL(MAX(M_NO),0)
+        FROM REVIEW
+        WHERE M_NO=#{M_NO} AND R_BOOKKEY = #{isbn}
+    </select>
 </mapper>
