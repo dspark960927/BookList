@@ -6,13 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="css/styles.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <style>
-        .center{
+        .center {
             display: table;
             margin-left: auto;
             margin-right: auto;
@@ -32,88 +32,103 @@
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="/main">Home</a></li>
                     <li class="breadcrumb-item"><a href="/myReview">MyPage</a></li>
-                    <li class="breadcrumb-item active"><a href="/login">LogOut</a></li>
+                    <li class="breadcrumb-item active" th:if="${memberVO}==null"><a href="/login">LogIn</a></li>
+                    <li class="breadcrumb-item active" th:if="${memberVO}!=null"><a href="/logout">LogOut</a></li>
                 </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
     <div class="center">
-        <form class="form-inline ml-3" method="POST" action="/FilmSearch">
-            <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="책이름을 검색해보세요."  size="50" aria-label="Search" id="keyword" name="keyword">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit" color="gray">
-                        검색
-                    </button>
+            <form class="form-inline ml-3" method="GET" action="/search">
+                <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar" type="search" placeholder="책이름을 검색해보세요."  size="50" aria-label="Search" id="keyword" name="keyword" th:value="${keyword}">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar" type="submit" color="gray" th:onclick="|location.href='@{keyword=${keyword}}'|">
+                            검색
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
     </div>
 </section>
 
 <section class="py-5">
-    <div class="container px-4 px-lg-5 my-5" >
+    <div class="container px-4 px-lg-5 my-5">
         <div style="width: 1000px">
-
-
-        <div class="row gx-4 gx-lg-5 align-items-center" th:each="entry: ${detail}">
-            <div class="col-md-6" style="width:450px; height: 600px;">
-                <img class="card-img-top mb-5 mb-md-0" th:src="@{${entry.cover}}" style="width:400px; height: 600px; border: 1px solid gray" />
-            </div>
-            <div class="col-md-6">
-                <h3 class="display-5 fw-bolder" th:text="${entry.title}"></h3>
-                <div class="fs-5 mb-5">
-                    <label style="font-weight: bolder;">저자 : </label>
-                    <span th:text="${entry.author}" class="word"></span><br>
-                    <label style="font-weight: bolder;">출간일 : </label>
-                    <span th:text="${entry.pubdate}" class="word"></span><br>
-                    <label style="font-weight: bolder;">정가 : </label>
-                    <span th:text="${entry.pricestandard}" class="word"></span><br>
-                    <label style="font-weight: bolder;">출판사</label>
-                    <span th:text="${entry.publisher}" class="word"></span><br>
-                    <label style="font-weight: bolder;">상품설명</label>
-                    <p th:text="${entry.description}" class="lead"></p><br>
-                    <div class="d-flex">
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${member?.M_NO}==null">
-                            ♡
-                        </button>
-                        <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==null AND ${member?.M_NO}!=null"
-                                    th:M_NO="${member?.M_NO}" th:isbn="${entry.isbn}" th:onclick="likelistInsert(this.getAttribute('M_NO'),this.getAttribute('isbn'))">
+            <div class="row gx-4 gx-lg-5 align-items-center" th:each="entry: ${detail}">
+                <div class="col-md-6" style="width:450px; height: 600px;">
+                    <img class="card-img-top mb-5 mb-md-0" th:src="@{${entry.cover}}"
+                         style="width:400px; height: 600px; border: 1px solid gray"/>
+                </div>
+                <div class="col-md-6">
+                    <h3 class="display-5 fw-bolder" th:text="${entry.title}"></h3>
+                    <div class="fs-5 mb-5">
+                        <label style="font-weight: bolder;">저자 : </label>
+                        <span th:text="${entry.author}" class="word"></span><br>
+                        <label style="font-weight: bolder;">출간일 : </label>
+                        <span th:text="${entry.pubdate}" class="word"></span><br>
+                        <label style="font-weight: bolder;">정가 : </label>
+                        <span th:text="${entry.pricestandard}" class="word"></span><br>
+                        <label style="font-weight: bolder;">출판사</label>
+                        <span th:text="${entry.publisher}" class="word"></span><br>
+                        <label style="font-weight: bolder;">상품설명</label>
+                        <p th:text="${entry.description}" class="lead"></p><br>
+                        <div class="d-flex">
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button"
+                                    th:if="${member?.M_NO}==null">
                                 ♡
                             </button>
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==1"
-                                    th:L_NO="${likelist.L_NO}" th:isbn="${entry.isbn}" th:onclick="likelistDelete(this.getAttribute('L_NO'),this.getAttribute('isbn'))">
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button"
+                                    th:if="${likelist?.l_LIKECHK}==null AND ${member?.M_NO}!=null"
+                                    th:M_NO="${member?.M_NO}" th:isbn="${entry.isbn}"
+                                    th:onclick="likelistInsert(this.getAttribute('M_NO'),this.getAttribute('isbn'))">
+                                ♡
+                            </button>
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button"
+                                    th:if="${likelist?.l_LIKECHK}==1"
+                                    th:L_NO="${likelist.L_NO}" th:isbn="${entry.isbn}"
+                                    th:onclick="likelistDelete(this.getAttribute('L_NO'),this.getAttribute('isbn'))">
                                 ♥
                             </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <section class="mb-5">
-            <div class="card bg-light">
-                <div class="card-body">
-                    <form class="mb-4" th:object=${reviewVO} method="post" >
-                        <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS}" id="R_CONTS" name="R_CONTS"></textarea>
-                        <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
-                    </form>
+            <section class="mb-5">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <form class="mb-4" th:object=${reviewVO} method="post">
+                            <textarea class="form-control" rows="3"
+                                      placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS}"
+                                      id="R_CONTS" name="R_CONTS"></textarea>
+                            <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
+                        </form>
                         <div class="d-flex mb-4" th:each="entry: ${review}">
                             <div class="ms-3">
                                 <div class="fw-bold" th:text="${entry.M_NICKNAME}"></div>
                                 <div th:Id="'R_ID'+${entry.R_NO}">
-                                <p th:text="${entry.R_CONTS}" class="lead"></p>
-                                <p th:text="${entry.R_DATE}" class="lead"></p>
-                                <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button" th:if="${entry.M_NO}==${member?.M_NO}"
-                                        th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewUpdate(this.getAttribute('R_ID'),this.getAttribute('isbn'))">수정</button>
-                                <button class="btn btn-outline-dark flex-shrink-0" id="deleteBtn" type="button" th:if="${entry.M_NO}==${member?.M_NO}"
-                                        th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}" th:onclick="reviewDelete(this.getAttribute('R_ID'),this.getAttribute('isbn'))">삭제</button>
+                                    <p th:text="${entry.R_CONTS}" class="lead"></p>
+                                    <p th:text="${entry.R_DATE}" class="lead"></p>
+                                    <button class="btn btn-outline-dark flex-shrink-0" id="updateBtn" type="button"
+                                            th:if="${entry.M_NO}==${member?.M_NO}"
+                                            th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}"
+                                            th:onclick="reviewUpdate(this.getAttribute('R_ID'),this.getAttribute('isbn'))">
+                                        수정
+                                    </button>
+                                    <button class="btn btn-outline-dark flex-shrink-0" id="deleteBtn" type="button"
+                                            th:if="${entry.M_NO}==${member?.M_NO}"
+                                            th:R_ID="${entry.R_NO}" th:isbn="${entry.R_BOOKKEY}"
+                                            th:onclick="reviewDelete(this.getAttribute('R_ID'),this.getAttribute('isbn'))">
+                                        삭제
+                                    </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
     </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -123,72 +138,72 @@
 
 </body>
 <script>
-    function reviewDelete(R_NO,isbn){
+    function reviewDelete(R_NO, isbn) {
         $.ajax({
-            type:"POST",
-            url:'/detail/delete/R_NO/'+R_NO,
-            success:function (res) {
+            type: "POST",
+            url: '/detail/delete/R_NO/' + R_NO,
+            success: function (res) {
                 alert("삭제");
                 location.href = `detail?isbn=` + isbn;
             }
         });
     }
 
-    function reviewUpdate(R_NO, isbn){
+    function reviewUpdate(R_NO, isbn) {
         var contentView = "";
-            contentView += '<form class="mb-4" th:object=${reviewVO} method="post">' ;
-            contentView += '<textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS1}" id="R_CONTS1" name="R_CONTS1"></textarea>';
-            contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button" type="button" onclick="update('+ R_NO + ',\'' + isbn +'\')">수정</button>';
-            contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button">취소</button>';
-            contentView += '</form>';
+        contentView += '<form class="mb-4" th:object=${reviewVO} method="post">';
+        contentView += '<textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS1}" id="R_CONTS1" name="R_CONTS1"></textarea>';
+        contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button" type="button" onclick="update(' + R_NO + ',\'' + isbn + '\')">수정</button>';
+        contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button">취소</button>';
+        contentView += '</form>';
 
-        $('#R_ID'+R_NO).replaceWith(contentView);
+        $('#R_ID' + R_NO).replaceWith(contentView);
     }
 
-    function update(R_NO,isbn){
+    function update(R_NO, isbn) {
         const r = $("#R_CONTS1").val();
         const R_CONTS = {
-            R_CONTS : r
+            R_CONTS: r
         }
 
         $.ajax({
-            type:'POST',
-            url:'/detail/update/R_NO/'+R_NO,
-            data:R_CONTS,
-            success:function (res) {
+            type: 'POST',
+            url: '/detail/update/R_NO/' + R_NO,
+            data: R_CONTS,
+            success: function (res) {
                 alert("업뎃");
                 location.href = `detail?isbn=` + isbn;
             }
         })
     }
 
-    function likelistInsert(M_NO, isbn){
+    function likelistInsert(M_NO, isbn) {
         const m = M_NO;
         const c = 1;
         const l = isbn;
 
         const like = {
-            M_NO : m,
-            L_LIKECHK : c,
-            L_BOOKKEY : l
+            M_NO: m,
+            L_LIKECHK: c,
+            L_BOOKKEY: l
         }
         $.ajax({
-            type : 'POST',
-            url : '/detail/likeinsert/M_NO/'+M_NO,
+            type: 'POST',
+            url: '/detail/likeinsert/M_NO/' + M_NO,
             data: like,
-            success:function (res) {
+            success: function (res) {
                 alert("좋아요 리스트에 추가합니다.");
                 location.href = `detail?isbn=` + isbn;
             }
         })
     }
 
-    function likelistDelete(L_NO,isbn){
+    function likelistDelete(L_NO, isbn) {
         console.log("삭제버튼")
         $.ajax({
-            type:"POST",
-            url:'/detail/likedelete/L_NO/'+L_NO,
-            success:function (res) {
+            type: "POST",
+            url: '/detail/likedelete/L_NO/' + L_NO,
+            success: function (res) {
                 alert("좋아요 리스트에서 삭제합니다.");
                 location.href = `detail?isbn=` + isbn;
             }

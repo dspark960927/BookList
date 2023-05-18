@@ -47,6 +47,14 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/logout")
+    public String MemberLogout(HttpServletRequest req){
+        HttpSession session = req.getSession();
+
+        session.invalidate();
+        return "redirect:/main";
+    }
+
     @GetMapping("/join")
     public String MemberInsertForm(@ModelAttribute MemberVO member){
 
@@ -63,28 +71,6 @@ public class MemberController {
 
         return "joinAccess";
     }
-
-
-    /*
-    @PostMapping("/join")
-    public String MemberInsertProc(@Valid MemberVO member, BindingResult result, HttpServletRequest request){
-
-
-
-        if (result.hasErrors()){
-            System.out.println("!!");
-            return "join";
-        }
-
-        System.out.println(member);
-
-        memberService.memberInsert(member);
-
-        return "joinAccess";
-    }
-
-     */
-
 
     @RequestMapping("/findId")
     public String MemberFindId(){
