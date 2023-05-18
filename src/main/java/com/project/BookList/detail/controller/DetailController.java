@@ -45,12 +45,12 @@ public class DetailController {
 
         model.addAttribute("member",memberVO);
 
-        LikelistVO likelist = new LikelistVO();
-        likelist = likelistService.likkelistSelect(memberVO.getM_NO(),isbn);
+        if(memberVO != null){
+            LikelistVO likelist = new LikelistVO();
+            likelist = likelistService.likkelistSelect(memberVO.getM_NO(),isbn);
 
-        model.addAttribute("likelist", likelist);
-
-        System.out.println("likelist : "+likelist);
+            model.addAttribute("likelist", likelist);
+        }
 
         return "detail";
     }

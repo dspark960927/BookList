@@ -52,7 +52,10 @@
 </section>
 
 <section class="py-5">
-    <div class="container px-4 px-lg-5 my-5">
+    <div class="container px-4 px-lg-5 my-5" >
+        <div style="width: 1000px">
+
+
         <div class="row gx-4 gx-lg-5 align-items-center" th:each="entry: ${detail}">
             <div class="col-md-6" style="width:450px; height: 600px;">
                 <img class="card-img-top mb-5 mb-md-0" th:src="@{${entry.cover}}" style="width:400px; height: 600px; border: 1px solid gray" />
@@ -71,8 +74,11 @@
                     <label style="font-weight: bolder;">상품설명</label>
                     <p th:text="${entry.description}" class="lead"></p><br>
                     <div class="d-flex">
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==null"
-                                    th:M_NO="${member.M_NO}" th:isbn="${entry.isbn}" th:onclick="likelistInsert(this.getAttribute('M_NO'),this.getAttribute('isbn'))">
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${member?.M_NO}==null">
+                            ♡
+                        </button>
+                        <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==null AND ${member?.M_NO}!=null"
+                                    th:M_NO="${member?.M_NO}" th:isbn="${entry.isbn}" th:onclick="likelistInsert(this.getAttribute('M_NO'),this.getAttribute('isbn'))">
                                 ♡
                             </button>
                             <button class="btn btn-outline-dark flex-shrink-0" type="button" th:if="${likelist?.l_LIKECHK}==1"
@@ -107,6 +113,7 @@
                 </div>
             </div>
         </section>
+    </div>
     </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

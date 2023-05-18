@@ -28,7 +28,7 @@ public class MainServiceImpl implements MainService{
                     requestUrl
                             +"?ttbkey=" + TTBKey
                             +"&QueryType=ItemNewSpecial" //주목할 만한 신간
-                            +"&MaxResults=8&start=1" //최대출력개수, 시작페이지
+                            +"&MaxResults=9&start=1" //최대출력개수, 시작페이지
                             +"&SearchTarget=Book" //조회대상
                             +"&output=JS" //출력방법
                             +"&Version=20131101" //api버전
@@ -75,7 +75,7 @@ public class MainServiceImpl implements MainService{
                     requestUrl
                     +"?ttbkey=" + TTBKey
                     +"&QueryType=Bestseller" //베스트샐러
-                    +"&MaxResults=8&start=1" //최대출력개수, 시작페이지
+                    +"&MaxResults=9&start=1" //최대출력개수, 시작페이지
                     +"&SearchTarget=Book" //조회대상
                     +"&output=JS" //출력방법
                     +"&Version=20131101" //api버전
