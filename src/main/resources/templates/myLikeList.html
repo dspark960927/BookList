@@ -1,12 +1,139 @@
 <!-- 좋아요 리스트 -->
 
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        .center {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .word {
+            display: block;
+            color: black;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            line-height: 1.2;
+            /*        height: 4.8em;*/
+            text-align: left;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2 ;
+            -webkit-box-orient: vertical;
+        }
+
+        .imgtext {
+            position: absolute;
+            top : 80%;
+            left: 80%;
+            background-color: white;
+        }
+
+        #img{
+            position: relative;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <script>
+        function likelistDelete(L_NO, isbn) {
+            console.log("삭제버튼")
+            $.ajax({
+                type: "POST",
+                url: '/detail/likedelete/L_NO/' + L_NO,
+                success: function (res) {
+                    alert("좋아요 리스트에서 삭제합니다.");
+                    location.href = `mylikelist`;
+                }
+            });
+        }
+
+    </script>
 </head>
 <body>
-<h1> 내 좋아요리스트 my likelist</h1>
+<div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6" onclick="location.href='/main'">
+            <h1>BookList</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/main">Home</a></li>
+                <li class="breadcrumb-item"><a href="/myReview">MyPage</a></li>
+                <li class="breadcrumb-item active" th:if="${memberVO}==null"><a href="/login">LogIn</a></li>
+                <li class="breadcrumb-item active" th:if="${memberVO}!=null"><a href="/logout">LogOut</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion" style="width: 250px">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">MyPage</div>
+                <a class="nav-link" href="myLikeList.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    LikeList
+                </a>
+                <a class="nav-link" href="myReview.html">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    ReviewList
+                </a>
+            </div>
+        </div>
+    </nav>
+    </div>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <div style="margin: auto; display: flex; width: 1170px">
+                <div style="width: 1170px; margin: 10px;" >
+                    <h2>좋아요리스트</h2>
+                    <div  class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" th:each="entry: ${likelist}" style="float: left;" >
+                        <div class="col mb-5" style="margin: 5px 5px 5px 5px; width: 240px; height: 380px">
+                            <div class="card h-100">
+                                <div id="img">
+                                    <img class="card-img-top" th:src="@{${entry.myLikeListVO.cover}}" style="width:200px; height: 300px; margin: 0 auto;" />
+                                    <button class="btn btn-outline-dark flex-shrink-0 imgtext" type="button"
+                                            th:L_NO="${entry.myLikeListVO.L_NO}" th:isbn="${entry.myLikeListVO.isbn}"
+                                            th:onclick="likelistDelete(this.getAttribute('L_NO'),this.getAttribute('isbn'))">
+                                        ♥
+                                    </button>
+                                </div>
+
+
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <span th:text="${entry.myLikeListVO.title}" class="word" style="font-weight: bolder !important;"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="js/scripts.js"></script>
 </body>
 </html>

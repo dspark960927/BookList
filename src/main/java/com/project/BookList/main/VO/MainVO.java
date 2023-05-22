@@ -5,9 +5,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
 public class MainVO {
     private String title; //상품명
     private String author; //저자
