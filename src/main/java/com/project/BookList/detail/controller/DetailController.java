@@ -30,6 +30,7 @@ public class DetailController {
     @Autowired
     LikelistService likelistService;
 
+    //상세페이지 컨트롤러
     @GetMapping("/detail")
     public String Datail(@RequestParam("isbn") String isbn, Model model,
                          @SessionAttribute(name="memberVO",required = false) MemberVO memberVO,
@@ -55,8 +56,6 @@ public class DetailController {
             model.addAttribute("mChk",mChk);
         }
 
-
-
         return "detail";
     }
 
@@ -75,25 +74,28 @@ public class DetailController {
         return "redirect:/detail";
     }
 
+    //한줄평 수정
     @PostMapping("/detail/update/R_NO/{R_NO}")
     @ResponseBody
     public void UpdateReview(ReviewVO reviewVO, Model model){
         reviewService.reviewUpdate(reviewVO);
     }
 
+    //한줄평 삭제
     @PostMapping("/detail/delete/R_NO/{R_NO}")
     @ResponseBody
     public void ReviewDelete(@PathVariable int R_NO, @ModelAttribute ReviewVO reviewVO){
         reviewService.reviewDelete(R_NO);
     }
 
+    //좋아요 추가
     @PostMapping("/detail/likeinsert/M_NO/{M_NO}")
     @ResponseBody
     public void LikelistInsert(@ModelAttribute LikelistVO likelistVO){
-
         likelistService.likelistInsert(likelistVO);
     }
 
+    //좋아요 삭제
     @PostMapping("/detail/likedelete/L_NO/{L_NO}")
     @ResponseBody
     public void LikelistDelete(@PathVariable int L_NO){

@@ -17,38 +17,33 @@ import java.util.List;
 @Controller
 public class MainController {
 
-
     @Autowired
     MainService mainService;
 
-
+    //메인페이지
     @RequestMapping("/main")
     public String Main(Model model, @SessionAttribute(name="memberVO",required = false)MemberVO memberVO){
 
         model.addAttribute("memberVO", memberVO);
-        System.out.println("main "+memberVO);
+
         //신간
         List<MainVO> itemNew = new ArrayList<>();
         itemNew = mainService.getNewList();
         model.addAttribute("itemNew",itemNew);
-
-        //System.out.println(itemNew);
 
         //베스트셀러
         List<MainVO> bestSeller = new ArrayList<>();
         bestSeller = mainService.getBestList();
         model.addAttribute("bestSeller",bestSeller);
 
-        //System.out.println(bestSeller);
-
         return "main";
     }
 
+    //검색페이지
     @RequestMapping("/search")
-    public String Search(@RequestParam("keyword") String keyword, Model model, @SessionAttribute(name="memberVO",required = false)MemberVO memberVO){
-        System.out.println("search "+ memberVO);
-        System.out.println(keyword);
-
+    public String Search(@RequestParam("keyword") String keyword,
+                         Model model,
+                         @SessionAttribute(name="memberVO",required = false)MemberVO memberVO){
         List<MainVO> searchList = new ArrayList<>();
         searchList = mainService.getSearchList(keyword);
         model.addAttribute("searchList", searchList);

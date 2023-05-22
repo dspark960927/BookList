@@ -170,7 +170,7 @@
         contentView += '<form class="mb-4" th:object=${reviewVO} method="post">';
         contentView += '<textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS1}" id="R_CONTS1" name="R_CONTS1"></textarea>';
         contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button" type="button" onclick="update(' + R_NO + ',\'' + isbn + '\')">수정</button>';
-        contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button">취소</button>';
+        contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button" onclick="location.href=\'detail?isbn='+isbn+'\'">취소</button>';
         contentView += '</form>';
 
         $('#R_ID' + R_NO).replaceWith(contentView);
@@ -224,10 +224,6 @@
                 location.href = `detail?isbn=` + isbn;
             }
         });
-    }
-
-    function memberReview(){
-
     }
 
 </script>

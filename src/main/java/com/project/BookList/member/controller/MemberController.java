@@ -20,6 +20,7 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
+    //로그인페이지
     @GetMapping("/login")
     public String MemberLoginPage(@ModelAttribute MemberVO member){
         return "login";
@@ -47,6 +48,7 @@ public class MemberController {
         }
     }
 
+    //로그아웃
     @GetMapping("/logout")
     public String MemberLogout(HttpServletRequest req){
         HttpSession session = req.getSession();
@@ -55,29 +57,29 @@ public class MemberController {
         return "redirect:/main";
     }
 
+    //회원가입
     @GetMapping("/join")
     public String MemberInsertForm(@ModelAttribute MemberVO member){
 
         return "join";
     }
 
-
     @PostMapping("/join")
     public String MemberInsertProc(@ModelAttribute MemberVO member, HttpServletRequest request){
-
-        System.out.println(member);
 
         memberService.memberInsert(member);
 
         return "joinAccess";
     }
 
+    //아이디 찾기
     @RequestMapping("/findId")
     public String MemberFindId(){
 
         return "findId";
     }
 
+    //비밀번호 찾기
     @RequestMapping("/findPw")
     public String MemberFindPw(){
 
