@@ -2,10 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.project.BookList.mypage.mapper.MypageMapper">
-    <select id="myLikelistSelect" resultType="com.project.BookList.mypage.VO.MypageVO">
+    <select id="myLikelistSelect" resultType="com.project.BookList.mypage.VO.MyLikelistResultVO">
         SELECT L_NO, L_BOOKKEY
         FROM LIKELIST
         WHERE M_NO = #{M_NO}
+    </select>
 
+    <select id="myReviewSelect" resultType="com.project.BookList.mypage.VO.MyReviewResultVO">
+        select R_NO, R_CONTS, R_DATE, R_BOOKKEY
+        from REVIEW
+        where M_NO = #{M_NO}
     </select>
 </mapper>

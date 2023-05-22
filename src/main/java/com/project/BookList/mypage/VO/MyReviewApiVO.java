@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class MyLikeListVO {
-    private MyLikelistApiVO myLikelistApiVO;
+@AllArgsConstructor
+public class MyReviewApiVO {
+    private String title; //상품명
+    private String cover; //표지
 }

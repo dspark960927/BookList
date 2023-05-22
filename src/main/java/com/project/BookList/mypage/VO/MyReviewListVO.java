@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class MyLikeVO {
-    private MyLikeListVO myLikeListVO;
+@AllArgsConstructor
+public class MyReviewListVO {
+    private MyReviewResultVO myReviewVO;
+    private MyReviewApiVO myReviewGetVO;
 }

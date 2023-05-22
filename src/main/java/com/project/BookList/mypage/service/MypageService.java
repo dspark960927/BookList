@@ -1,12 +1,15 @@
 package com.project.BookList.mypage.service;
 
-import com.project.BookList.mypage.VO.MyLikeListVO;
-import com.project.BookList.mypage.VO.MypageVO;
+import com.project.BookList.mypage.VO.*;
 
 import java.util.List;
 
 public interface MypageService {
-    List<MypageVO> myLikelistSelect(int M_NO);
+    List<MyLikelistResultVO> myLikelistSelect(int M_NO);
 
-    MyLikeListVO getMyLikeList(int L_NO, String isbn);
+    MyLikelistApiVO getMyLikeList(int L_NO, String isbn);
+
+    List<MyReviewResultVO> myReviewSelect(int M_NO);
+
+    MyReviewApiVO getMyReviewList(int R_NO, String isbn);
 }
