@@ -12,4 +12,6 @@ public interface MypageService {
     List<MyReviewResultVO> myReviewSelect(int M_NO);
 
     MyReviewApiVO getMyReviewList(int R_NO, String isbn);
+
+    MyReviewApiVO getMyReviewUpdate(String isbn);
 }

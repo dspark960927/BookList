@@ -111,4 +111,42 @@ public class MypageServiceImpl implements MypageService {
         }
         return itemNew;
     }
+
+    @Override
+    public MyReviewApiVO getMyReviewUpdate(String isbn) {
+        String result;
+
+        MyReviewApiVO itemNew = new MyReviewApiVO();
+
+        try {
+            URL url = new URL(
+                    requestUrl
+                            + "?ttbkey=" + TTBKey
+                            + "&output=JS" //출력방법
+                            + "&Version=20131101" //api버전
+                            + "&Cover=Big" //api버전
+                            + "&ItemId=" + isbn //api버전
+            );
+
+            BufferedReader bf;
+
+            bf = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+
+            result = bf.readLine();
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+
+            JSONArray item = (JSONArray) jsonObject.get("item");
+
+            JSONObject title = (JSONObject) item.get(0);
+
+            itemNew.setTitle((String) title.get("title"));
+            itemNew.setCover((String) title.get("cover"));
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return itemNew;
+    }
 }

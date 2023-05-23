@@ -1,13 +1,14 @@
 package com.project.BookList.mypage.controller;
 
+import com.project.BookList.detail.VO.ReviewVO;
+import com.project.BookList.detail.service.ReviewService;
 import com.project.BookList.member.VO.MemberVO;
 import com.project.BookList.mypage.VO.*;
 import com.project.BookList.mypage.service.MypageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.List;
 public class MypageController {
     @Autowired
     MypageService mypageService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @RequestMapping("/mylikelist")
     public String MyLikeList(@SessionAttribute(name="memberVO",required = false) MemberVO memberVO, Model model) {
@@ -28,16 +32,14 @@ public class MypageController {
             MyLikeListVO like = new MyLikeListVO();
             like.setMyLikelistApiVO(mypageService.getMyLikeList(myLikelist.get(i).getL_NO(),myLikelist.get(i).getL_BOOKKEY()));
 
-            System.out.println(like);
             myLike.add(like);
         }
-
         model.addAttribute("likelist", myLike);
 
         return "myLikeList";
     }
 
-    @RequestMapping("myreview")
+    @RequestMapping("/myreview")
     public String MyReview(@SessionAttribute(name="memberVO",required = false) MemberVO memberVO, Model model){
         List<MyReviewResultVO> myReviewList = new ArrayList<>();
         myReviewList = mypageService.myReviewSelect(memberVO.getM_NO());
@@ -53,6 +55,29 @@ public class MypageController {
             myReview.add(review);
         }
 
+        model.addAttribute("review",myReview);
+
         return "myReview";
+    }
+
+    @RequestMapping("/myreviewupdatepop")
+    public String MyReviewUpdatePop(@SessionAttribute(name="memberVO",required = false) MemberVO memberVO, Model model,
+                                 @ModelAttribute ReviewVO reviewVO,
+                                 @RequestParam("R_NO") String R_NO,
+                                 @RequestParam("R_BOOKKEY") String R_BOOKKEY){
+        MyReviewApiVO myReviewApi = new MyReviewApiVO();
+        myReviewApi = mypageService.getMyReviewUpdate(R_BOOKKEY);
+
+        model.addAttribute("myReviewApi", myReviewApi);
+
+        System.out.println(myReviewApi);
+        return "MyReviewUpdate";
+    }
+
+    @PostMapping("/myreviewupdate/R_NO/{R_NO}")
+    @ResponseBody
+    public void MyReviewUpdate(@SessionAttribute(name="memberVO",required = false) MemberVO memberVO,
+                               @ModelAttribute ReviewVO reviewVO){
+        reviewService.reviewUpdate(reviewVO);
     }
 }
