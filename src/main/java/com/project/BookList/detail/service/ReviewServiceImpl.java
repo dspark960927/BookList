@@ -1,6 +1,9 @@
 package com.project.BookList.detail.service;
 
+import com.project.BookList.detail.VO.ReviewPageVO;
+import com.project.BookList.detail.VO.ReviewPagingVO;
 import com.project.BookList.detail.VO.ReviewVO;
+import com.project.BookList.detail.VO.ReviewsVO;
 import com.project.BookList.detail.mapper.ReviewMapper;
 import org.hibernate.validator.internal.engine.PredefinedScopeConfigurationImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +44,37 @@ public class ReviewServiceImpl implements ReviewService{
     public int reviewChkSelect(int M_NO, String isbn) {
         return reviewMapper.reviewChkSelect(M_NO, isbn);
     }
+
+
+    @Override
+    public ReviewsVO reviewList(ReviewPagingVO reviewPagingVO,String isbn) {
+        ReviewsVO reviewsVO = new ReviewsVO();
+
+        reviewsVO.setList(reviewMapper.getReviewPaging(reviewPagingVO,isbn));
+        reviewsVO.setReviewPageVO(new ReviewPageVO(reviewPagingVO,reviewMapper.getReviewTotal(isbn)));
+
+        return reviewsVO;
+    }
+
+
+    /*
+    @Override
+    public List<ReviewVO> getReviewPaging(ReviewPagingVO reviewPagingVO, String bookKey) {
+        return reviewMapper.getReviewPaging(reviewPagingVO, bookKey);
+    }
+
+    @Override
+    public ReviewPageVO getReviewPage(ReviewPagingVO reviewPagingVO, int total) {
+        ReviewPageVO reviewPage = new ReviewPageVO();
+
+        reviewPage.setReviewPagingVO(reviewPagingVO);
+        reviewPage.setTotal(reviewMapper.getReviewTotal(reviewPagingVO.getR_BOOKKEY()));
+
+        return reviewPage;
+
+        //return reviewMapper.getReviewTotal(new ReviewPagingVO(reviewPagingVO,re));
+    }
+
+     */
 
 }

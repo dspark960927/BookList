@@ -1,13 +1,12 @@
 package com.project.BookList.detail.controller;
 
-import com.project.BookList.detail.VO.DetailVO;
-import com.project.BookList.detail.VO.LikelistVO;
-import com.project.BookList.detail.VO.ReviewVO;
+import com.project.BookList.detail.VO.*;
 import com.project.BookList.detail.service.DetailService;
 import com.project.BookList.detail.service.LikelistService;
 import com.project.BookList.detail.service.ReviewService;
 import com.project.BookList.member.VO.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +30,50 @@ public class DetailController {
     LikelistService likelistService;
 
     //상세페이지 컨트롤러
-    @GetMapping("/detail")
-    public String Datail(@RequestParam("isbn") String isbn, Model model,
+    @GetMapping(value = "/detail",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String Detail(@RequestParam("isbn") String isbn, Model model,
                          @SessionAttribute(name="memberVO",required = false) MemberVO memberVO,
-                         @ModelAttribute ReviewVO reviewVO){
+                         @ModelAttribute ReviewVO reviewVO,
+                         ReviewPagingVO reviewPagingVO){
 
         List<DetailVO> detail = new ArrayList<>();
         detail = detailService.getDetailList(isbn);
         model.addAttribute("detail",detail);
 
+        ReviewsVO reviews = new ReviewsVO();
+
+        reviewPagingVO.setIsbn(isbn);
+        reviews = reviewService.reviewList(reviewPagingVO,isbn);
+
+        System.out.println(reviews);
+        model.addAttribute("reviews",reviews);
+
+
+        //List<ReviewPagingVO> reviewPaging = new ArrayList<>();
+        //reviewPaging = reviewService.getReviewPaging(reviewPagingVO,isbn);
+
+
+        //model.addAttribute("review", reviewService.reviewList(reviewPagingVO));
+
+        //System.out.println(reviewService.reviewList(reviewPagingVO));
+
+
+        /*
         List<ReviewVO> review = new ArrayList<>();
         review = reviewService.reviewSelect(isbn);
         model.addAttribute("review", review);
+
+        model.addAttribute("member",memberVO);
+
+
+        System.out.println(reviewPagingVO);
+
+        List<ReviewVO> review = new ArrayList<>();
+        review = reviewService.getReviewPaging(reviewPagingVO,isbn);
+        model.addAttribute("review", review);
+
+        System.out.println(review);
+         */
 
         model.addAttribute("member",memberVO);
 
@@ -58,6 +89,15 @@ public class DetailController {
 
         return "detail";
     }
+
+    @GetMapping(value = "/detail/list",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ReviewsVO reviewList(ReviewPagingVO reviewPagingVO,@RequestParam("isbn") String isbn){
+        ReviewsVO reviews = new ReviewsVO();
+        reviews = reviewService.reviewList(reviewPagingVO,isbn);
+        return reviewService.reviewList(reviewPagingVO,isbn);
+    }
+
 
     @PostMapping("/detail")
     public String Review(@ModelAttribute ReviewVO reviewVO,

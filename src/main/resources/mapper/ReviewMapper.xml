@@ -28,4 +28,17 @@
         FROM REVIEW
         WHERE M_NO=#{M_NO} AND R_BOOKKEY = #{isbn}
     </select>
+
+    <select id="getReviewPaging" resultType="com.project.BookList.detail.VO.ReviewVO">
+        SELECT R_NO, MEMBERS.M_NO, R_CONTS, R_DATE, R_BOOKKEY, M_NICKNAME
+        FROM REVIEW JOIN MEMBERS ON REVIEW.M_NO = MEMBERS.M_NO
+        WHERE R_BOOKKEY = #{isbn}
+        LIMIT #{reviewPagingVO.skip},#{reviewPagingVO.amount}
+    </select>
+
+    <select id="getReviewTotal" resultType="int">
+        SELECT COUNT(*)
+        FROM REVIEW
+        WHERE R_BOOKKEY = #{isbn}
+    </select>
 </mapper>

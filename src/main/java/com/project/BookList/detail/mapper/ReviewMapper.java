@@ -1,5 +1,6 @@
 package com.project.BookList.detail.mapper;
 
+import com.project.BookList.detail.VO.ReviewPagingVO;
 import com.project.BookList.detail.VO.ReviewVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,5 +18,9 @@ public interface ReviewMapper {
     int reviewUpdate(ReviewVO reviewVO);
 
     int reviewChkSelect(int M_NO, String isbn);
+
+    List<ReviewVO> getReviewPaging(ReviewPagingVO reviewPagingVO,String isbn);
+
+    int getReviewTotal(String isbn);
 
 }
