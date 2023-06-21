@@ -39,16 +39,18 @@
         </div>
     </div><!-- /.container-fluid -->
     <div class="center">
-            <form class="form-inline ml-3" method="GET" action="/search">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="책이름을 검색해보세요."  size="50" aria-label="Search" id="keyword" name="keyword" th:value="${keyword}">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit" color="gray" th:onclick="|location.href='@{keyword=${keyword}}'|">
-                            검색
-                        </button>
-                    </div>
+        <form class="form-inline ml-3" method="GET" action="/search">
+            <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="책이름을 검색해보세요." size="50"
+                       aria-label="Search" id="keyword" name="keyword" th:value="${keyword}">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit" color="gray"
+                            th:onclick="|location.href='@{keyword=${keyword}}'|">
+                        검색
+                    </button>
                 </div>
-            </form>
+            </div>
+        </form>
     </div>
 </section>
 
@@ -113,7 +115,7 @@
                                           id="R_CONTS" name="R_CONTS"></textarea>
                                 <input class="btn btn-primary btn-block" id="join_button" type="submit" th:value="확인">
                             </div>
-                            <div th:if="${mChk}!=0">
+                            <div th:if="${mChk}!=0 AND ${member?.M_NO}!=null">
                                 <textarea class="form-control" rows="3"
                                           placeholder="이미 한줄평이 있습니다." disabled></textarea>
                                 <input class="btn btn-primary btn-block" disabled='disabled' th:value="확인">
@@ -142,38 +144,35 @@
                             </div>
                         </div>
                         <div style="text-align: center">
-                        <nav aria-label="Page navigation example" >
-                            <ul class="pagination">
-                            <!-- 이전 버튼 -->
-                            <th:block th:if="${reviews.reviewPageVO.prev}">
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript:void(0)"
-                                       th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${reviews.reviewPageVO.reviewPagingVO.makeQueryString(reviews.reviewPageVO.pageStart - 1)} ]])">
-                                        이전</a>
-                                </li>
-                            </th:block>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <th:block th:if="${reviews.reviewPageVO.prev}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="javascript:void(0)"
+                                               th:onclick="movePage([[ ${#request.requestURI} ]], [[ ${reviews.reviewPageVO.reviewPagingVO.makeQueryString(reviews.reviewPageVO.pageStart - 1)} ]])">
+                                                이전</a>
+                                        </li>
+                                    </th:block>
 
-                            <!-- 페이지 번호 -->
-                            <th:block th:with="pageMaker = ${reviews.reviewPageVO}">
-                                <th:block th:each="num : *{#numbers.sequence(pageMaker.pageStart, pageMaker.pageEnd)}">
-                                    <li class="page-item" th:classappend="${reviews.reviewPageVO.reviewPagingVO.pageNum == num} ? 'active' : ''">
-                                        <a class="page-link" href="javascript:void(0)"
-                                           th:text="${num}"
-                                           th:onclick="movePage([[ ${#request.requestURI} ]],[[ ${reviews.reviewPageVO.reviewPagingVO.makeQueryString(num)} ]])"></a>
-                                    </li>
-                                </th:block>
-                            </th:block>
-
-                            <!-- 다음 버튼 -->
-                            <th:block th:if="${reviews.reviewPageVO.next}">
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript:void(0)"
-                                       th:onclick="movePage( [[ ${#request.requestURI} ]], [[ ${reviews.reviewPageVO.reviewPagingVO.makeQueryString(reviews.reviewPageVO.pageEnd + 1)} ]])">다음</a>
-                                </li>
-                            </th:block>
-
-                            </ul>
-                        </nav>
+                                    <th:block th:with="pageMaker = ${reviews.reviewPageVO}">
+                                        <th:block
+                                                th:each="num : *{#numbers.sequence(pageMaker.pageStart, pageMaker.pageEnd)}">
+                                            <li class="page-item"
+                                                th:classappend="${reviews.reviewPageVO.reviewPagingVO.pageNum == num} ? 'active' : ''">
+                                                <a class="page-link" href="javascript:void(0)"
+                                                   th:text="${num}"
+                                                   th:onclick="movePage([[ ${#request.requestURI} ]],[[ ${reviews.reviewPageVO.reviewPagingVO.makeQueryString(num)} ]])"></a>
+                                            </li>
+                                        </th:block>
+                                    </th:block>
+                                    <th:block th:if="${reviews.reviewPageVO.next}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="javascript:void(0)"
+                                               th:onclick="movePage( [[ ${#request.requestURI} ]], [[ ${reviews.reviewPageVO.reviewPagingVO.makeQueryString(reviews.reviewPageVO.pageEnd + 1)} ]])">다음</a>
+                                        </li>
+                                    </th:block>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -204,7 +203,7 @@
         contentView += '<form class="mb-4" th:object=${reviewVO} method="post">';
         contentView += '<textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!" th:field="*{R_CONTS1}" id="R_CONTS1" name="R_CONTS1"></textarea>';
         contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button" type="button" onclick="update(' + R_NO + ',\'' + isbn + '\')">수정</button>';
-        contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button" onclick="location.href=\'detail?isbn='+isbn+'\'">취소</button>';
+        contentView += '<button class="btn btn-outline-dark flex-shrink-0" id="join_button2" type="button" onclick="location.href=\'detail?isbn=' + isbn + '\'">취소</button>';
         contentView += '</form>';
 
         $('#R_ID' + R_NO).replaceWith(contentView);
@@ -263,9 +262,6 @@
 </script>
 <script th:javascript>
     function movePage(uri, queryString) {
-        console.log(uri);
-        console.log(queryString);
-
         location.href = uri + queryString;
     }
 </script>

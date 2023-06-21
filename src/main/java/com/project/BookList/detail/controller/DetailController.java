@@ -90,15 +90,6 @@ public class DetailController {
         return "detail";
     }
 
-    @GetMapping(value = "/detail/list",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ReviewsVO reviewList(ReviewPagingVO reviewPagingVO,@RequestParam("isbn") String isbn){
-        ReviewsVO reviews = new ReviewsVO();
-        reviews = reviewService.reviewList(reviewPagingVO,isbn);
-        return reviewService.reviewList(reviewPagingVO,isbn);
-    }
-
-
     @PostMapping("/detail")
     public String Review(@ModelAttribute ReviewVO reviewVO,
                          @SessionAttribute(name="memberVO",required = false) MemberVO memberVO,
